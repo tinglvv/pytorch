@@ -197,7 +197,7 @@ do
     13.0|13.0.*) install_130;
         ;;
     13.2|13.2.*) install_132;
-        ;;    
+        ;;
     *) echo "bad argument $1"; exit 1
         ;;
     esac
