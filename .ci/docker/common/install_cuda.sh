@@ -94,22 +94,6 @@ function install_124 {
   ldconfig
 }
 
-function install_126 {
-  CUDNN_VERSION=9.10.2.21
-  echo "Installing CUDA 12.6.3 and cuDNN ${CUDNN_VERSION} and NVSHMEM and NCCL and cuSparseLt-0.7.1"
-  install_cuda 12.6.3 cuda_12.6.3_560.35.05_linux
-
-  install_cudnn 12 $CUDNN_VERSION
-
-  install_nvshmem 12 $NVSHMEM_VERSION
-
-  CUDA_VERSION=12.6 bash install_nccl.sh
-
-  CUDA_VERSION=12.6 bash install_cusparselt.sh
-
-  ldconfig
-}
-
 function install_129 {
   CUDNN_VERSION=9.17.1.4
   echo "Installing CUDA 12.9.1 and cuDNN ${CUDNN_VERSION} and NVSHMEM and NCCL and cuSparseLt-0.7.1"
@@ -164,13 +148,29 @@ function install_130 {
   ldconfig
 }
 
+function install_132 {
+  CUDNN_VERSION=9.19.0.56
+  echo "Installing CUDA 13.2 and cuDNN ${CUDNN_VERSION} and NVSHMEM and NCCL and cuSparseLt-0.7.1"
+  # install CUDA 13.2 in the same container
+  install_cuda 13.2.0 cuda_13.2.0_595.45.04_linux
+
+  # cuDNN license: https://developer.nvidia.com/cudnn/license_agreement
+  install_cudnn 13 $CUDNN_VERSION
+
+  install_nvshmem 13 $NVSHMEM_VERSION
+
+  CUDA_VERSION=13.2 bash install_nccl.sh
+
+  CUDA_VERSION=13.2 bash install_cusparselt.sh
+
+  ldconfig
+}
+
 # idiomatic parameter and option handling in sh
 while test $# -gt 0
 do
     case "$1" in
     12.4) install_124;
-        ;;
-    12.6|12.6.*) install_126;
         ;;
     12.8|12.8.*) install_128;
         ;;
@@ -178,6 +178,8 @@ do
         ;;
     13.0|13.0.*) install_130;
         ;;
+    13.2|13.2.*) install_132;
+        ;;    
     *) echo "bad argument $1"; exit 1
         ;;
     esac
